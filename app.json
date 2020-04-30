@@ -1,7 +1,9 @@
 {
   "expo": {
-    "name": "333",
-    "slug": "333",
+    "name": "Blank Template",
+    "slug": "appwk4proj",
+    "privacy": "public",
+    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android",
@@ -23,6 +25,7 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": ""
   }
 }
