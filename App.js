@@ -1,5 +1,6 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableWithoutFeedbac, TouchableOpacity, Linking } from 'react-native';
+import * as React from 'react';
+
+import { StyleSheet, Text, View, Image, TouchableWithoutFeedbac, TouchableOpacity, Linking,AsyncStorage } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator, DrawerActions } from '@react-navigation/stack';
 import {
@@ -9,7 +10,7 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import { navigationRef } from './RootNavigation';
-
+import { SplashScreen } from 'expo';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Albumlist from './src/components/Albumlist';
@@ -18,7 +19,7 @@ import HomeStackScreen from './src/screens/HomeStackScreen';
 import MybookStackScreen from './src/screens/MybookStackScreen';
 import albumData from "./src/json/album.json";
 
-
+const PERSISTENCE_KEY = "NAVIGATION_STATE";
 
 
 
@@ -40,15 +41,55 @@ function CustomDrawerContent(props) {
       </View>
       <DrawerItemList {...props} />
     </DrawerContentScrollView>
+
+
+
+
   );
 }
+
+
+
+
+
+
+
 
 const Drawer = createDrawerNavigator();
 
 const App = () => {
-  return (
-
-    <NavigationContainer ref={navigationRef}>
+  const [isLoadingComplete, setLoadingComplete] = React.useState(false);
+  const [initialNavigationState, setInitialNavigationState] = React.useState();
+  React.useEffect(() => {
+    async function loadResourcesAndDataAsync() {
+      try {
+        SplashScreen.preventAutoHide();
+        const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY);
+        const state = JSON.parse(savedStateString);
+        setInitialNavigationState(state);
+      } catch (e) {
+        // We might want to provide this error information to an error reporting service
+        console.warn(e);
+      } finally {
+        setLoadingComplete(true);
+        SplashScreen.hide();
+        
+      }
+    }
+    loadResourcesAndDataAsync();
+  }, []);
+  if (!isLoadingComplete) {
+    return null;
+  } else {
+    return (
+    <NavigationContainer
+    initialState={initialNavigationState}
+          onStateChange={(state) =>{
+            AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state));
+           
+          }
+          }
+     ref={navigationRef}>
       <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}
         drawerContentOptions={{
           activeTintColor: '#fff',
@@ -120,7 +161,7 @@ const App = () => {
 
 
   );
-}
+}}
 
 const styles = StyleSheet.create({
 
