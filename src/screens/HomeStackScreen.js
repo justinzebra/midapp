@@ -8,6 +8,7 @@ import CC from '../components/CC';
 import DD from '../components/DD';
 import EE from '../components/EE';
 import LL from '../components/LL';
+import first from '../components/first';
 import Albumlist from '../components/CC';
 const Stack = createStackNavigator();
 const HomeStackScreen = ({ navigation }) => {
@@ -102,7 +103,19 @@ const HomeStackScreen = ({ navigation }) => {
         }}
       />
 
-
+      <Stack.Screen name="first" component={first}
+        options={{
+          headerLeft: () => <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <Image style={styles.headdd} source={require('../img/bt0.jpg')} />
+          </TouchableOpacity>,
+          title: "GGGG",
+          headerTintColor: '#fff',
+          headerStyle: {
+            backgroundColor: '#ffffff', opacity: 1, elevation: 0,
+            shadowOpacity: 0, height: 65
+          },
+        }}
+      />
 
     </Stack.Navigator>
 

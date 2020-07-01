@@ -1,4 +1,4 @@
-import * as React from 'react';
+import  React, {useState,useEffect}from 'react';
 
 import { StyleSheet, Text, View, Image, TouchableWithoutFeedbac, TouchableOpacity, Linking,AsyncStorage } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
@@ -18,6 +18,16 @@ import HomeStackScreen from './src/screens/HomeStackScreen';
 
 import MybookStackScreen from './src/screens/MybookStackScreen';
 import albumData from "./src/json/album.json";
+
+import LoginScreen from './src/screens/LoginScreen'
+import {StoreProvider} from'./src/stores/progressstore'
+
+
+
+
+
+
+
 
 const PERSISTENCE_KEY = "NAVIGATION_STATE";
 
@@ -58,9 +68,9 @@ function CustomDrawerContent(props) {
 const Drawer = createDrawerNavigator();
 
 const App = () => {
-  const [isLoadingComplete, setLoadingComplete] = React.useState(false);
-  const [initialNavigationState, setInitialNavigationState] = React.useState();
-  React.useEffect(() => {
+  const [isLoadingComplete, setLoadingComplete] = useState(false);
+  const [initialNavigationState, setInitialNavigationState] = useState();
+  useEffect(() => {
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHide();
@@ -232,7 +242,15 @@ const styles = StyleSheet.create({
   }
 
 });
-export default App;
+export default ()=>{
+return(
+  <StoreProvider>< App/></StoreProvider>
+ 
+  
+  
+  )
+
+};
 
 
 /*主要設定左邊滑動 */
